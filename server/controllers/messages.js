@@ -1,22 +1,21 @@
 var models = require('../models');
-var mysql = require('mysql2');
-var {connection: connection} = require('../db');
+
 
 
 module.exports = {
   get: function (req, res) {
-    // Querying the database
-    //  SELECT * FROM messages;
-    // Inner join users id and rooms id > to get usernames and room names
-    // Returning the results with res.send()
-    connection.query(
-      'SELECT * FROM messages', function(error, results, fields) {
-        res.send(results);
-      }
-    );
+    //Invoke models.getall
+    models.getAll((err, data) => {
+      console.log('This is results from MESSAGES Model: ', data);
+      res.send(data);
+    });
 
   }, // a function which handles a get request for all messages
   post: function (req, res) {
+    //Invoke models.create
 
   } // a function which handles posting a message to the database
 };
+
+
+// App > Routes > Controller > Models > DB (server connection)

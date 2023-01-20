@@ -55,6 +55,7 @@ describe('Persistent Node Chat Server', () => {
 
           // TODO: If you don't have a column named text, change this test.
           expect(results[0].textMessage).toEqual(message);
+          //Post username, message, roomname > return username, message, roomname
           done();
         });
       })
