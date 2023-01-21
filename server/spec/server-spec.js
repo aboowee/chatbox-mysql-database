@@ -8,8 +8,8 @@ const API_URL = 'http://127.0.0.1:3000/classes';
 
 describe('Persistent Node Chat Server', () => {
   const dbConnection = mysql.createConnection({
-    user: 'student',
-    password: 'student',
+    user: 'root',
+    password: '',
     database: 'chat',
   });
 
@@ -79,7 +79,7 @@ describe('Persistent Node Chat Server', () => {
       axios.get(`${API_URL}/messages`)
         .then((response) => {
           const messageLog = response.data;
-          expect(messageLog[0].text).toEqual(message);
+          expect(messageLog[0].textMessage).toEqual(message);
           expect(messageLog[0].roomname).toEqual(roomname);
           done();
         })

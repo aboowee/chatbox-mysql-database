@@ -4,26 +4,26 @@ USE chat;
 
 /* Create other tables and define schemas for them here! */
 CREATE TABLE users (
-  usersID INT,
+  usersID INT NOT NULL AUTO_INCREMENT,
   userName VARCHAR(255),
   PRIMARY KEY (usersID)
 );
 
-CREATE TABLE rooms (
-  roomsID INT,
-  roomName VARCHAR(255),
-  PRIMARY KEY (roomsID)
-);
+-- CREATE TABLE rooms (
+--   roomsID INT,
+--   roomName VARCHAR(255),
+--   PRIMARY KEY (roomsID)
+-- );
 
 CREATE TABLE messages (
   /* Describe your table here.*/
-messagesID INT,
+messagesID INT NOT NULL AUTO_INCREMENT,
 textMessage VARCHAR(255),
-createdAt DATETIME,
+-- createdAt DATETIME,
 usersID INT,
-roomsID INT,
+roomName VARCHAR(255),
 FOREIGN KEY (usersID) REFERENCES users(usersID),
-FOREIGN KEY (roomsID) REFERENCES rooms(roomsID),
+-- FOREIGN KEY (roomsID) REFERENCES rooms(roomsID),
 PRIMARY KEY (messagesID)
 );
 
