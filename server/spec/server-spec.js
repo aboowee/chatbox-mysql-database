@@ -16,14 +16,13 @@ describe('Persistent Node Chat Server', () => {
   beforeAll((done) => {
     dbConnection.connect();
 
-       const tablename = ['messages', 'users', 'rooms']; // TODO: fill this out
+    const tablename = 'messages'; // TODO: fill this out
     // beforeEach()
     /* Empty the db table before all tests so that multiple tests
      * (or repeated runs of the tests)  will not fail when they should be passing
      * or vice versa */
-    dbConnection.query(`truncate ${[...tablename]}`, done);
+    dbConnection.query(`truncate ${tablename}`, done);
   }, 6500);
-
   afterAll(() => {
     dbConnection.end();
   });
@@ -66,8 +65,9 @@ describe('Persistent Node Chat Server', () => {
 
   it('Should output all messages from the DB', (done) => {
     // Let's insert a message into the db
-       const queryString = 'SELECT textMessage FROM messages';
-       const queryArgs = [];
+    const [message, roomname] = ['Yo yo', 'mainlobby'];
+    const queryString = 'INSERT INTO messages (textMessage, roomName, usersID) VALUES (?, ?, ?)';
+    const queryArgs = [message, roomname, 2];
     /* TODO: The exact query string and query args to use here
      * depend on the schema you design, so I'll leave them up to you. */
     dbConnection.query(queryString, queryArgs, (err) => {
@@ -80,7 +80,7 @@ describe('Persistent Node Chat Server', () => {
         .then((response) => {
           const messageLog = response.data;
           expect(messageLog[0].textMessage).toEqual(message);
-          expect(messageLog[0].roomname).toEqual(roomname);
+          expect(messageLog[0].roomName).toEqual(roomname);
           done();
         })
         .catch((err) => {

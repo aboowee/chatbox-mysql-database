@@ -22,7 +22,7 @@ textMessage VARCHAR(255),
 -- createdAt DATETIME,
 usersID INT,
 roomName VARCHAR(255),
-FOREIGN KEY (usersID) REFERENCES users(usersID),
+-- FOREIGN KEY (usersID) REFERENCES users(usersID),
 -- FOREIGN KEY (roomsID) REFERENCES rooms(roomsID),
 PRIMARY KEY (messagesID)
 );
