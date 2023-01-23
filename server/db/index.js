@@ -48,7 +48,8 @@ var Message = db.define('messages', {
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   }
 });
-
+User.sync();
+Message.sync();
 
 module.exports.db = db;
 module.exports.User = User;

@@ -2,29 +2,19 @@ var {db, User, Message} = require('../db');
 
 module.exports = {
   getAll: function (controllerGetCallback) {
-    User.sync()
-      .then(function() {
-        // Now instantiate an object and save it:
-        User.findAll()
-          .then ((data) => {
-            controllerGetCallback(null, data);
-          })
-          .catch ((error) => {
-            controllerGetCallback(error);
-          });
+    User.findAll()
+      .then ((data) => {
+        controllerGetCallback(null, data);
       })
-      .catch(function(err) {
-        // Handle any error in the chain
-        controllerGetCallback(err);
+      .catch ((error) => {
+        controllerGetCallback(error);
       });
   },
 
   create: function (inputData, callback) {
-    User.sync()
-      .then(function() {
-        // Now instantiate an object and save it:
-        User.create({userName: inputData.username.toString()});
-        callback(null, 'User created');
+    User.create({userName: inputData.username})
+      .then ((data) => {
+        callback(null, data);
       })
       .catch(function(err) {
         // Handle any error in the chain
