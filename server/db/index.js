@@ -1,22 +1,57 @@
-var mysql = require('mysql2');
 
-// Create a database connection and export it from this file.
-// Confirm that the credentials supplied for the connection are correct.
-// On Campus at pairing stations you'll use
-// user: 'student', password: 'student'
-// On your personal computer supply the correct credentials for your mySQL account -- likely
-// user: 'root', password: ''
-// OR
-// user: 'root', password: 'some_password_you_created_at_install'
-
-var connection = mysql.createConnection({
+var Sequelize = require('sequelize');
+var db = new Sequelize('chat', 'root', '', {
   host: 'localhost',
-  user: 'root',
-  database: 'chat'
+  dialect: 'mysql'
 });
 
-connection.connect();
+db.sync()
+  .then (() =>
+    console.log('Database has been established successfully.'))
+  .catch ((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
 
-module.exports = connection;
+db.authenticate()
+  .then(() =>
+    console.log('Connection has been established successfully.'))
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
+
+var User = db.define('users', {
+  userName: Sequelize.STRING,
+  createdAt: {
+    allowNull: false,
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  updatedAt: {
+    allowNull: false,
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  }
+});
+
+var Message = db.define('messages', {
+  userName: Sequelize.STRING,
+  textMessage: Sequelize.STRING,
+  roomName: Sequelize.STRING,
+  createdAt: {
+    allowNull: false,
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  },
+  updatedAt: {
+    allowNull: false,
+    type: Sequelize.DATE,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+  }
+});
+
+
+module.exports.db = db;
+module.exports.User = User;
+module.exports.Message = Message;
 
 

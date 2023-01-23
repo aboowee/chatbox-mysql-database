@@ -1,26 +1,35 @@
-var db = require('../db');
+var {db, User, Message} = require('../db');
 
 module.exports = {
   getAll: function (controllerGetCallback) {
-    db.query(
-      'SELECT messages.messagesID, messages.roomName, messages.textMessage, users.username FROM messages LEFT OUTER JOIN users on (messages.usersID = users.usersID) ORDER BY messages.messagesID desc', function(error, results, fields) {
-        if (error) {
-          controllerGetCallback(error);
-        } else {
-          controllerGetCallback(null, results);
-        }
-      }
-    );
+    Message.sync()
+      .then(function() {
+      // Now instantiate an object and save it:
+        Message.findAll()
+          .then ((data) => {
+            controllerGetCallback(null, data);
+          })
+          .catch ((error) => {
+            controllerGetCallback(error);
+          });
+      })
+      .catch(function(err) {
+        // Handle any error in the chain
+        controllerGetCallback(err);
+      });
   }, // a function which produces all the messages
 
   create: function (params, callback) {
-    db.query('INSERT INTO messages (textMessage, roomName, usersID) VALUES (?, ?, (SELECT usersID FROM users WHERE userName = ? LIMIT 1))', params, function (error, results) {
-      if (error) {
-        callback(error);
-      } else {
-        callback(null, results);
-      }
-    });
+    Message.sync()
+      .then(function() {
+        // Now instantiate an object and save it:
+        Message.create(params);
+        callback(null, 'Message created');
+      })
+      .catch(function(err) {
+        // Handle any error in the chain
+        callback(err);
+      });
   }
   // a function which can be used to insert a message into the database
 

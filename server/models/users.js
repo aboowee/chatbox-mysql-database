@@ -1,25 +1,34 @@
-var db = require('../db');
+var {db, User, Message} = require('../db');
 
 module.exports = {
   getAll: function (controllerGetCallback) {
-    db.query(
-      'SELECT * FROM users', function(error, results) {
-        if (error) {
-          controllerGetCallback(error);
-        } else {
-          controllerGetCallback(null, results);
-        }
-      }
-    );
+    User.sync()
+      .then(function() {
+        // Now instantiate an object and save it:
+        User.findAll()
+          .then ((data) => {
+            controllerGetCallback(null, data);
+          })
+          .catch ((error) => {
+            controllerGetCallback(error);
+          });
+      })
+      .catch(function(err) {
+        // Handle any error in the chain
+        controllerGetCallback(err);
+      });
   },
 
   create: function (inputData, callback) {
-    db.query(`INSERT INTO users (userName) VALUES ('${inputData.username}')`, function(error, results) {
-      if (error) {
-        callback(error);
-      } else {
-        callback(null, results);
-      }
-    });
+    User.sync()
+      .then(function() {
+        // Now instantiate an object and save it:
+        User.create({userName: inputData.username.toString()});
+        callback(null, 'User created');
+      })
+      .catch(function(err) {
+        // Handle any error in the chain
+        callback(err);
+      });
   }
 };

@@ -14,7 +14,7 @@ module.exports = {
 
   }, // a function which handles a get request for all messages
   post: function (req, res) {
-    var params = {textMessage: req.body.message, roomName: req.body.roomname, userName: req.body.username};
+    var params = [req.body.message, req.body.roomname, req.body.username];
     models.messages.create(params, function (err, data) {
       if (err) {
         res.sendStatus(500);
